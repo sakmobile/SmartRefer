@@ -1,0 +1,60 @@
+version: "2"
+networks:
+  kong-network:
+    external:
+        name: kong-network
+services:
+  smartrefer-api:
+    image: "registry.gitlab.com/ubon-refer/client-server/smart-refer-api:master"
+    container_name: "smartrefer-api"
+    hostname: smartrefer-api
+    networks:
+      - kong-network
+    environment:
+      TZ: "Asia/Bangkok" #TIMEZONE Asia/Bangkok
+    # ports:
+    #   - 3004:3004
+    expose:
+      - "3004"
+    volumes:
+      - ./config.api:/home/smartreferapi/config
+    restart: always
+  smartrefer-app:
+    image: "registry.gitlab.com/ubon-refer/client-server/smartrefer-web:master"
+    container_name: "smartrefer-app"
+    hostname: smartrefer-app
+    networks:
+      - kong-network
+    environment:
+      TZ: "Asia/Bangkok" #TIMEZONE Asia/Bangkok
+    # ports:
+    #   - 4200:4200
+    expose:
+      - "4200"
+    restart: always
+    depends_on:
+      - smartrefer-api
+
+  smartrefer-web:
+    container_name: smartrefer-web
+    image: nginx:alpine
+    ports:
+      - 8080:80    
+    networks:
+      - kong-network        
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf            
+    restart: always
+    depends_on:
+      - smartrefer-api
+      - smartrefer-app
+  watchtower_smartrefer:
+    image: v2tec/watchtower
+    container_name: watchtower_smartrefer
+    networks:
+      - kong-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - /root/.docker/config.json:/config.json
+    command: watchtower_smartrefer smartrefer-api smartrefer-app --interval 30
+    restart: unless-stopped

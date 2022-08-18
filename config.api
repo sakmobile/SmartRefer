@@ -1,0 +1,29 @@
+# universal ,  phosp, mbase, homc, hi, hosxpv4, hosxpv4pg, hosxpv3,himpro,jhcis,ubase,sakon,homcudon
+# mysql , mssql , pg
+
+HIS_PROVIDER=himpro
+DB_HOST=192.168.100.1
+DB_CLIENT=mysql
+DB_PORT=3306
+DB_NAME=hosdata
+DB_USER=root
+DB_PASSWORD=boom123
+
+USER_ANYWHERE=xxxxx
+PASS_ANYWHERE=xxxxxxxx
+
+DB_CHARSET=utf8
+
+HIS_CODE=10942
+
+SERV_API_URL=http://ubonrefer.phoubon.in.th/api/smartrefer
+
+#Server KET 10
+#SERV_API_URL=http://ubonrefer.phoubon.in.th/api/smartrefer
+#Server KET 8
+#SERV_API_URL=http://smartrefer8.udh.go.th/api/smartrefer
+
+HIS_API_URL=http://localhost:3004
+SECRET_KEY=YourSecretKey
+
+PORT=3004
